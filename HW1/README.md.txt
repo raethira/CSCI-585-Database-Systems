@@ -169,5 +169,5 @@ Entity Relationships:
 		
 Weak entities:
 -------------
-	TEACH, RATING
+	TEACH, RATING 
 
