@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.0">
+<Document>
+<Style id="z1">
+<IconStyle><Icon><href>http://www.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png</href></Icon></IconStyle>
+</Style>
+<Placemark><name>My home</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.028556,37.382472</coordinates></Point>
+</Placemark>
+<Placemark><name>Car Parking</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.030250,37.382139</coordinates></Point>
+</Placemark>
+<Placemark><name>Community Entrance</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.029750,37.381500</coordinates></Point>
+</Placemark>
+<Placemark><name>Fire station</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.033028,37.381972</coordinates></Point>
+</Placemark>
+<Placemark><name>Twitter</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.034611,37.382250</coordinates></Point>
+</Placemark>
+<Placemark><name>Libbys Water Tower</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.035167,37.381389</coordinates></Point>
+</Placemark>
+<Placemark><name>Acubed</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.035139,37.382694</coordinates></Point>
+</Placemark>
+<Placemark><name>Wildwood Manor</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.032056,37.383528</coordinates></Point>
+</Placemark>
+<Placemark><name>Sutton Place</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.031694,37.384944</coordinates></Point>
+</Placemark>
+<Placemark><name>Peartree</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.031222,37.386000</coordinates></Point>
+</Placemark>
+<Placemark><name>Murphy Park</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.027139,37.381306</coordinates></Point>
+</Placemark>
+<Placemark><name>Caltrain Station</name>
+<styleUrl>#z1</styleUrl><Point><coordinates>-122.030694,37.378722</coordinates></Point>
+</Placemark>
+
+<Style id="transBluePoly">
+	<LineStyle>
+        <width>4.5</width>
+    </LineStyle>
+    <PolyStyle>
+    	<color>ffffff</color>
+    </PolyStyle>
+</Style>
+<Placemark>
+	<name>Sunnyvale</name>
+    <styleUrl>#transBluePoly</styleUrl>
+    <Polygon>
+    	<extrude>1</extrude>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <outerBoundaryIs>
+        	<LinearRing>
+            	<coordinates> 
+            		-122.030694,37.378722,17
+            	    -122.035167,37.381389,17
+              		-122.035139,37.382694,17
+              		-122.031222,37.386,17
+              		-122.027139,37.381306,17
+              		-122.030694,37.378722,17
+            	</coordinates>
+          	</LinearRing>
+        </outerBoundaryIs>
+    </Polygon>
+</Placemark>
+ 
+<Placemark>
+	<LineString>
+    	<width>3.5</width> 
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates> 
+        	-122.028556,37.382472,17
+        	-122.030250,37.382139,17 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <LineString>
+        <width>3.5</width>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates> 
+        	-122.028556,37.382472,17
+        	-122.029750,37.38150,17
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+	<LineString>
+		<width>3.5</width> 
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates> 
+        	-122.028556,37.382472,17 
+        	-122.032056,37.383528,17
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+	<LineString>
+ 		<width>3.5</width> 
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates> 
+        	-122.028556,37.382472,17
+        	-122.027139,37.381306,17
+        </coordinates>
+    </LineString>
+</Placemark>
+
+</Document>
+</kml>
+
+

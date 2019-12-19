@@ -1,0 +1,190 @@
+http://sqlfiddle.com
+PostgreSQL 9.6
+
+1.)
+
+CREATE TABLE HotelStays
+(roomNum INTEGER NOT NULL,
+arrDate DATE NOT NULL,
+depDate DATE NOT NULL,
+guestName CHAR(30) NOT NULL,
+PRIMARY KEY (roomNum, arrDate),
+CONSTRAINT CHK_arr_dep_date CHECK (arrDate <= depDate)
+);
+
+INSERT INTO HotelStays(roomNum, arrDate, depDate, guestName)
+VALUES 
+(123, to_date('20160202', 'YYYYMMDD'), to_date('20160206','YYYYMMDD'), 'A'),
+(123, to_date('20160204', 'YYYYMMDD'), to_date('20160208','YYYYMMDD'), 'B'),
+(201, to_date('20160210', 'YYYYMMDD'), to_date('20160206','YYYYMMDD'), 'C')
+; 
+
+SELECT * 
+FROM HotelStays;
+
+
+2.)
+
+CREATE TABLE enrollment
+(SID INTEGER NOT NULL,
+ClassName CHAR(30) NOT NULL,
+Grade CHAR(1) NOT NULL,
+PRIMARY KEY (SID, ClassName)
+);
+
+INSERT INTO enrollment(SID, ClassName, Grade)
+VALUES 
+(123, 'ARCH201', 'A'),
+(123, 'QUAN432', 'B'),
+(662, 'AMER352', 'B'),
+(662, 'ECON966', 'A'),
+(662, 'QUAN432', 'B'),
+(345, 'QUAN432', 'A'),
+(345, 'ECON966', 'D')
+; 
+
+SELECT * 
+FROM enrollment;
+
+SELECT ClassName, COUNT(*)
+FROM enrollment
+GROUP BY ClassName 
+--According to Piazza post @60
+ORDER BY 2 DESC, ClassName;
+
+3.)
+
+CREATE TABLE workOrders
+(ProjectID CHAR(30) NOT NULL,
+Step INTEGER NOT NULL,
+Status_ CHAR(1) NOT NULL,
+PRIMARY KEY (ProjectID, Step)
+);
+
+INSERT INTO workOrders(ProjectID, Step, Status_)
+VALUES 
+('P100', 0, 'C'),
+('P100', 1, 'W'),
+('P100', 2, 'W'),
+('P201', 0, 'C'),
+('P201', 1, 'C'),
+('P333', 0, 'W'),
+('P333', 1, 'W'),
+('P333', 2, 'W'),
+('P333', 3, 'W')
+; 
+
+SELECT * 
+FROM workOrders;
+                                                                                     
+SELECT ProjectID
+FROM workOrders
+WHERE (Step = 0 AND Status_ = 'C') AND ProjectID IN (SELECT ProjectID
+                                                 FROM workOrders
+                                                 WHERE (Step = 1 AND Status_ = 'W')
+                                                 );
+                                                 
+4.)
+
+
+CREATE TABLE junkmail
+(Name CHAR(30) NOT NULL,
+Address CHAR(1) NOT NULL,
+ID INTEGER NOT NULL,
+SameFam INTEGER NULL,
+PRIMARY KEY (ID)
+);
+
+INSERT INTO junkmail(Name, Address, ID, SameFam)
+VALUES 
+('Alice', 'A', 10, NULL),
+('Bob', 'B', 15, NULL),
+('Carmen', 'C', 22, NULL),
+('Diego', 'A', 9, 10),
+('Ella', 'B', 3, 15),
+('Farkhad', 'D', 11, NULL)
+; 
+
+SELECT * 
+FROM junkmail;
+
+DELETE FROM junkmail
+WHERE  ID IN (SELECT SameFam
+              FROM junkmail
+             );
+
+-- According to Piazza post @73
+UPDATE junkmail   
+SET SameFam = NULL;
+
+SELECT * 
+FROM junkmail;                                                                                  
+
+
+5.)
+CREATE TABLE desserts
+(Chef CHAR(1) NOT NULL,
+Dish CHAR(30) NOT NULL,
+PRIMARY KEY (Chef, Dish)
+);
+
+INSERT INTO desserts(Chef, Dish)
+VALUES 
+('A', 'Apple pie'),
+('A', 'Beignet'),
+('A', 'Andes Chocolate Cake'),
+('B', 'Tiramisu'),
+('B', 'Creme brulee'),
+('B', 'Beignet'),
+('C', 'Tiramisu'),
+('C', 'Creme brulee'),
+('D', 'Apple pie'),
+('D', 'Tiramisu'),
+('D', 'Creme brulee'),
+('E', 'Apple pie'),
+('E', 'Bananas Foster'),
+('E', 'Creme brulee'),
+('E', 'Tiramisu')
+; 
+
+SELECT * 
+FROM desserts;
+
+SELECT DISTINCT Chef
+FROM desserts
+WHERE 
+Chef IN (SELECT Chef
+               FROM desserts
+               WHERE Dish = 'Creme brulee')
+AND
+Chef IN (SELECT Chef
+               FROM desserts
+               WHERE Dish = 'Apple pie')            
+AND
+Chef IN (SELECT Chef
+               FROM desserts
+               WHERE Dish = 'Tiramisu');
+               
+               
+5.1)
+
+SELECT DISTINCT desserts.Chef
+FROM ((desserts 
+INNER JOIN  (SELECT Chef
+               FROM desserts
+               WHERE Dish = 'Creme brulee') AS Creme 
+             ON desserts.Chef = Creme.Chef)
+             
+INNER JOIN  (SELECT Chef
+               FROM desserts
+               WHERE Dish = 'Apple pie') AS Apple 
+            ON desserts.Chef = Apple.Chef)
+            
+INNER JOIN  (SELECT Chef
+               FROM desserts
+               WHERE Dish = 'Tiramisu') AS Tiramisu 
+            ON desserts.Chef = Tiramisu.Chef;
+
+
+
+

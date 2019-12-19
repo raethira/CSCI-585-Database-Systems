@@ -1,0 +1,30 @@
+// Explanation of all the below queries have been provided in the HW4_bonus.txt file, as they are identical
+// This is as per Piazza post @250, @265
+1.)
+g = TinkerGraph.open().traversal()
+g.addV().property(T.id, "CS101").as("v0").
+addV().property(T.id, "CS201").as("v1").
+addV().property(T.id, "CS220").as("v2").
+addV().property(T.id, "CS420").as("v3").
+addV().property(T.id, "CS334").as("v4").
+addV().property(T.id, "CS681").as("v5").
+addV().property(T.id, "CS400").as("v6").
+addV().property(T.id, "CS526").as("v7").
+addE("requires pre-req").from("v1").to("v0").
+addE("requires pre-req").from("v2").to("v1").
+addE("requires pre-req").from("v3").to("v2").
+addE("requires pre-req").from("v4").to("v1").
+addE("requires pre-req").from("v5").to("v4").
+addE("requires pre-req").from("v6").to("v4").
+addE("requires pre-req").from("v7").to("v6").
+addE("is a co-req of").from("v3").to("v2").
+addE("is a co-req of").from("v7").to("v6")
+
+2.)
+g.E().hasLabel("is a co-req of")
+
+3.)
+g.V(g.V().hasId("CS526").outE().inV().limit(1).next()).repeat(out().simplePath()).until(outE().count().is(0)).path().unfold()
+
+4.)
+g.V(g.V().hasId("CS101").next()).emit().repeat(inE().otherV()).path().tail().unfold().count().math('(_+1)/2')

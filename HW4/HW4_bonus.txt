@@ -1,0 +1,68 @@
+1.)
+g = TinkerGraph.open().traversal()
+g.addV().property(T.id, "CS101").as("v0").
+addV().property(T.id, "CS201").as("v1").
+addV().property(T.id, "CS220").as("v2").
+addV().property(T.id, "CS420").as("v3").
+addV().property(T.id, "CS334").as("v4").
+addV().property(T.id, "CS681").as("v5").
+addV().property(T.id, "CS400").as("v6").
+addV().property(T.id, "CS526").as("v7").
+addE("requires pre-req").from("v1").to("v0").
+addE("requires pre-req").from("v2").to("v1").
+addE("requires pre-req").from("v3").to("v2").
+addE("requires pre-req").from("v4").to("v1").
+addE("requires pre-req").from("v5").to("v4").
+addE("requires pre-req").from("v6").to("v4").
+addE("requires pre-req").from("v7").to("v6").
+addE("is a co-req of").from("v3").to("v2").
+addE("is a co-req of").from("v7").to("v6")
+
+// Explanation to the query: 
+// "g" is the Graph interface, created as instance by calling TinkerGraph class using open() method. 
+// traversal(): Creates TraversalSource which which tells Gremlin on how to make the trip throughout the graph
+// addV()     : Can be used to add a vertex with properties such as id 
+// as()       : Can be used to refer/label the created vertex(here)
+// addE()     : Can be used to add an edge along with a relationship description, between two given vertices
+// Result     : We have a standard graph "g", with required vertices and edges
+
+2.)
+g.E().hasLabel("is a co-req of")
+
+// Explanation to the query  : 
+// Assumption				 : Each pair of double connected nodes contain a "is a co-req of" edge  
+//							   This assumption was validated by an instructor in Piazza @268
+// g.E()                     : This query would return all the edges of the graph
+// hasLabel("is a co-req of"): This function filters edges with the given relationship description
+// Result 					 : Returns all the edges whose label is "is a co-req of", which indirectly is all the doubly-connected nodes
+
+3.)
+g.V(g.V().hasId("CS526").outE().inV().limit(1).next()).repeat(out().simplePath()).until(outE().count().is(0)).path().unfold()
+
+// Explanation to the query  						: 
+// Assumption										: No cycles exist in the graph and confirmed by an instructor in Piazza @260
+// g.V().hasId("CS526").outE().inV().limit(1).next():
+//     - g.V().hasId("CS526")					    : Gets the vertex of mentioned id
+//     - .outE()									: Returns all the outgoing edges
+//	   - .inV()										: Returns the incoming head vertex of the edge
+// 	   - .limit(1)									: Limits to only one vertex, in case of multiple returned vertices(no cycles, co-req)
+//     - .next()									: Gets the first item out of the Iterator
+//     - Result(step1)								: Executed in order to start the ancestor vertex from the parent of given vertex
+// g.V(Result(step1)).repeat(out()				    : Traversal starts at "Result(step1)" vertex and iteratively traverses on out edges
+//     -.simplePath())								: Filters out repeated paths
+//     -.until(outE().count().is(0))				: Repeats until root(has zero out edges)
+//     -.path()									    : Returns the path of the traverser(Gremlin)
+//     -.unfold()									: Unroll the list into linear forms, thus printing all vertices individually
+
+4.)
+g.V(g.V().hasId("CS101").next()).emit().repeat(inE().otherV()).path().tail().unfold().count().math('(_+1)/2')
+
+// Explanation to the query  					   : 
+// Assumption									   : Graph is a tree with no cycles and confirmed by an instructor in Piazza @260
+// g.V().hasId("CS101").next()					   : Gets the vertex of mentioned id (Result(step1))
+// g.V(Result(step1)).emit().repeat(inE().otherV()): From the given vertex, traverses using the incoming edge and lands on other vertex
+// 	   -.path()									   : Returns the path of the traverser(Gremlin), along with vertices and edges
+//     -.tail()									   : From the returned paths, by default the maximum length of list is returned last
+//     -.unfold()								   : Unroll the list into linear forms, to count the items in next step
+//     -.count()								   : Counts the number of returned items(N=V+E)
+//     -.math('(_+1)/2')                           : Assumption:- A tree with no cycles: -> V-E=1 -> V=(N+1)/2
